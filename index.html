@@ -46,7 +46,7 @@
                                 <div class="custom-control mb-3"> 
                                     <label> By clicking Sign Up, you agree to our <a class=>Terms of Use</a> and our <a>Privacy Policy</a></label>
                                 </div> 
-                                <button class="btn btn-lg btn-primary btn-block text-uppercase" id="submit" onclick="submitform()">Sign in</button>
+                                <button class="btn btn-lg btn-primary btn-block text-uppercase" id="submit">Sign in</button>
                                 
                             </form>
                         </div>
@@ -55,13 +55,49 @@
             </div>
         </div>
         <script>
+            var form = document.getElementById('form')
+            form.addEventListener('submit',function(e){
+                //preventing auto submission
+                e.preventDefault();
+                //assigning form input values to variables
+                var fname = document.getElementById('inputFname').value
+                var lname = document.getElementById('inputLname').value
+                var email = document.getElementById('inputEmail').value
+                var password = document.getElementById('inputPassword').value
+
+                //fetch post request
+                fetch("https://reqres.in/api/users",{
+                    method:'POST',
+                    body:JSON.stringify({
+                        first_name:fname,
+                        last_name:lname,
+                        email:email,
+                        password:password
+                    }),
+                    headers:{
+                        "Content-Type":"application/json; charset=UTF-8"
+                    }
+                })
+                //promise to return submitted values
+                .then(function(response){
+                    return response.json()
+                })
+                //promise to display submitted values
+                .then(function(data){
+                    console.log(data);
+                    window.alert("hi " + data.first_name +" you are registered!");
+                })
+            })
+
+
+
             var person = { userID:"",name:"",accessToken:"",email:""};
             function login(){
                 FB.login(function(response) {
                     if(response.status == "connected"){
                         person.userID = response.authResponse.userID;
                         person.accessToken = response.authResponse.accessToken;
-                        FB.api('/me?fields=id,name,first_name,lastname,email', function(userData) {
+                        FB.api('/me?fields=id,name,email', function(userData) {
                             console.log(userData);
                             person.name = userData.name;
                             person.email = userData.email;
@@ -80,9 +116,7 @@
                                 })
                                 .then(function(data){
                                     console.log(data);
-                                    if (data.firstname!=null) {
-                                        alert("hi " + data.first_name +" you are registered!");
-                                    }
+                                    alert("hi " + data.first_name +" you are registered!");
                                 })
                             })
                         })
@@ -100,41 +134,4 @@
           </script>
           <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
     </body>
-    <script>
-        var form = document.getElementById('form')
-        form.addEventListener('submit',function(e){
-            //preventing auto submission
-            e.preventDefault();
-            //assigning form input values to variables
-            var fname = document.getElementById('inputFname').value
-            var lname = document.getElementById('inputLname').value
-            var email = document.getElementById('inputEmail').value
-            var password = document.getElementById('inputPassword').value
-
-            //fetch post request
-            fetch("https://reqres.in/api/users",{
-                method:'POST',
-                body:JSON.stringify({
-                    first_name:fname,
-                    last_name:lname,
-                    email:email,
-                    password:password
-                }),
-                headers:{
-                    "Content-Type":"application/json; charset=UTF-8"
-                }
-            })
-            //promise to return submitted values
-            .then(function(response){
-                return response.json()
-            })
-            //promise to display submitted values
-            .then(function(data){
-                console.log(data);
-                if (data.firstname!=null) {
-                    alert("hi " + data.first_name +" you are registered!");
-                }
-            })
-        })
-    </script>
 </html>
