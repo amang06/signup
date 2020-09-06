@@ -1,5 +1,7 @@
 # signup
 
+you can directly access the app using this link ->  https://amang06.github.io/signup/
+
 1-> Normal login 
 
 ->After entering all the deatails when the submit button is clicked all the data is sent to reqres.in ad returned and displayed in the console (inspect element -> console tab)
