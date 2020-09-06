@@ -85,7 +85,7 @@
                 //promise to display submitted values
                 .then(function(data){
                     console.log(data);
-                    window.alert("hi " + data.first_name +" you are registered!");
+                    window.alert("hi " + data.first_name +" you are registered with email id "+ data.email);
                 })
             })
 
@@ -116,7 +116,7 @@
                                 })
                                 .then(function(data){
                                     console.log(data);
-                                    alert("hi " + data.first_name +" you are registered!");
+                                    alert("hi " + data.name +" you are registered using emailid "+ data.email);
                                 })
                             })
                         })
