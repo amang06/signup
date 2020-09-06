@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+
+    </head>
+    <body>
+        <div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v8.0&appId=318156972740777&autoLogAppEvents=1" nonce="EiFIQSkW"></script>
+        <div class="container">
+            <div class="row">
+                <div id="alert" class="alert">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                    <h3 class="alertmessage"></h3>
+                  </div>
+                <div class="col-sm-9 col-md-7 col-lg-7 mx-auto">
+                    <div class="card card-signin my-5">
+                        <div class="card-body">
+                            <h6 class="card-title text-center"><u>Sign Up</u></h6>
+                            <h3 class="text-center">Create your account</h3>
+                            <h6 class="card-title text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit</h6>
+                            <form class="form-signin" id="form" method="POST">
+                                <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i class="fa fa-google mr-2"></i> Sign in with Google</button>
+                                <button class="btn btn-lg btn-facebook btn-block text-uppercase" onclick="login()" type="submit"><i class="fa fa-facebook-f mr-2"></i> Sign in with Facebook</button>
+                                <div class="form-label-group"> 
+                                    <input type="text" id="inputFname" class="form-control" placeholder="First Name"> 
+                                </div>
+                                <div class="form-label-group"> 
+                                    <input type="text" id="inputLname" class="form-control" placeholder="Last Name"> 
+                                </div>
+                                <div class="form-label-group">
+                                     <input type="email" id="inputEmail" class="form-control" placeholder="Email address"> 
+                                </div>
+                                <div class="form-label-group">
+                                    <input name="password" type="password" id="inputPassword" class="form-control pwd" placeholder="Password">
+                                </div>
+                                <div class="custom-control mb-3"> 
+                                    <label> By clicking Sign Up, you agree to our <a class=>Terms of Use</a> and our <a>Privacy Policy</a></label>
+                                </div> 
+                                <button class="btn btn-lg btn-primary btn-block text-uppercase" id="submit" onclick="submitform()">Sign in</button>
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function login(){
+                FB.login(function(response) {
+                    console.log(response);
+                })
+            }
+            window.fbAsyncInit = function() {
+              FB.init({
+                appId            : '318156972740777',
+                autoLogAppEvents : true,
+                xfbml            : true,
+                version          : 'v8.0'
+              });
+            };
+          </script>
+          <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+    </body>
+    <script>
+        var form = document.getElementById('form')
+        form.addEventListener('submit',function(e){
+            //preventing auto submission
+            e.preventDefault();
+            //assigning form input values to variables
+            var fname = document.getElementById('inputFname').value
+            var lname = document.getElementById('inputLname').value
+            var email = document.getElementById('inputEmail').value
+            var password = document.getElementById('inputPassword').value
+
+            //fetch post request
+            fetch("https://reqres.in/api/users",{
+                method:'POST',
+                body:JSON.stringify({
+                    first_name:fname,
+                    last_name:lname,
+                    email:email,
+                    password:password
+                }),
+                headers:{
+                    "Content-Type":"application/json; charset=UTF-8"
+                }
+            })
+            //promise to return submitted values
+            .then(function(response){
+                return response.json()
+            })
+            //promise to display submitted values
+            .then(function(data){
+                console.log(data);
+                alert("hi " + data.first_name +" you are registered!");
+                document.getElementById("alertmessage").innerHTML= data.first_name + '! you have successfully registered!';
+                document.getElementById("alert").style.display="block";
+            })
+        })
+    </script>
+</html>
